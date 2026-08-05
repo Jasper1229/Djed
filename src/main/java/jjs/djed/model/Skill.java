@@ -1,5 +1,6 @@
 package jjs.djed.model;
 
+import jjs.djed.Main;
 import jjs.djed.util.Patterns;
 
 import java.time.Duration;
@@ -131,9 +132,29 @@ public class Skill {
         this.parentSkillId = parentSkillId;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    public Set<Skill> getChildren() {
+        return children;
+    }
+
+    public void addChild(Skill child) {
+        Objects.requireNonNull(child, "child cannot be null");
+        child.parentSkillId = this.skillId;
+        this.children.add(child);
+    }
+
+
     public void addTime(Duration duration) {
         Objects.requireNonNull(duration, "duration cannot be null");
         this.skillTime = this.skillTime.plus(duration);
+        Main.SKILL_DATABASE.upsertSkill(
+                skillId, templateId, userId, parentSkillId,
+                weight, skillTime.getSeconds(), displayName, description
+        );
+        upstreamDurationUpdate(duration);
     }
 
     public boolean setDisplayName(String name) {
@@ -163,8 +184,24 @@ public class Skill {
         return total;
     }
 
+    private boolean upstreamDurationUpdate(Duration delta) {
+        if (this.parentSkillId == null) return false;
+        Skill parent = Main.SKILL_DATABASE.getSkillById(this.parentSkillId);
+        if (parent == null) return false;
 
-
-
+        parent.skillTime = parent.skillTime.plus(delta);
+        Main.SKILL_DATABASE.upsertSkill(
+                parent.skillId,
+                parent.templateId,
+                parent.userId,
+                parent.parentSkillId,
+                parent.weight,
+                parent.skillTime.getSeconds(),
+                parent.displayName,
+                parent.description
+        );
+        parent.upstreamDurationUpdate(delta);
+        return true;
+    }
 
 }

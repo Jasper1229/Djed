@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12d8249c-4720-4460-932b-46cbed24e99a" name="Changes" comment="changed weight to integer">
+    <list default="true" id="12d8249c-4720-4460-932b-46cbed24e99a" name="Changes" comment="added logger so hikari doesnt yell at me">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jjs/djed/data/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/data/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjs/djed/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjs/djed/data/SkillDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/data/SkillDatabase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/jjs/djed/model/Skill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/model/Skill.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,6 +90,8 @@
     <MESSAGE value="initial commit, not functional" />
     <MESSAGE value="added postgresql stuff" />
     <MESSAGE value="changed weight to integer" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed weight to integer" />
+    <MESSAGE value="updated hikari config" />
+    <MESSAGE value="added logger so hikari doesnt yell at me" />
+    <option name="LAST_COMMIT_MESSAGE" value="added logger so hikari doesnt yell at me" />
   </component>
 </project>
