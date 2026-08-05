@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12d8249c-4720-4460-932b-46cbed24e99a" name="Changes" comment="" />
+    <list default="true" id="12d8249c-4720-4460-932b-46cbed24e99a" name="Changes" comment="initial commit, not functional">
+      <change afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/data/Database.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/data/SkillDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjs/djed/model/Skill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/model/Skill.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,6 +26,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Jasper1229"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Jasper1229/Djed.git",
+    "accountId": "ac8c1890-55db-4f15-8ee9-79910ccd394f"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2,
   &quot;fromUser&quot;: false
@@ -68,5 +86,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initial commit, not functional" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial commit, not functional" />
   </component>
 </project>
