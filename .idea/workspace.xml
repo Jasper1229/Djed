@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12d8249c-4720-4460-932b-46cbed24e99a" name="Changes" comment="initial commit, not functional">
-      <change afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/data/Database.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/data/SkillDatabase.java" afterDir="false" />
+    <list default="true" id="12d8249c-4720-4460-932b-46cbed24e99a" name="Changes" comment="changed weight to integer">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jjs/djed/data/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/data/Database.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/jjs/djed/model/Skill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jjs/djed/model/Skill.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,6 +87,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit, not functional" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit, not functional" />
+    <MESSAGE value="added postgresql stuff" />
+    <MESSAGE value="changed weight to integer" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed weight to integer" />
   </component>
 </project>
