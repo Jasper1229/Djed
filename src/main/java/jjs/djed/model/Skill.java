@@ -24,7 +24,7 @@ public class Skill {
     private UUID parentSkillId;
 
 
-    private double weight; // Weight used when ordering skills. Example: Basic 1, Intermediate 2; Advanced 3;
+    private int weight; // Weight used when ordering skills. Example: Basic 1, Intermediate 2; Advanced 3;
     private String description;
     private Duration skillTime;
     private String displayName;
@@ -73,15 +73,15 @@ public class Skill {
      * @param dateCreated Date created
      */
     public Skill(
-                 UUID skillId,
-                 UUID templateId,
-                 UUID userId,
-                 UUID parentSkillId,
-                 String displayName,
-                 String description,
-                 Duration skillTime,
-                 Double weight,
-                 Instant dateCreated
+            UUID skillId,
+            UUID templateId,
+            UUID userId,
+            UUID parentSkillId,
+            String displayName,
+            String description,
+            Duration skillTime,
+            int weight,
+            Instant dateCreated
     ) {
         this.displayName = displayName;
         this.skillTime = skillTime;
@@ -163,9 +163,6 @@ public class Skill {
         return total;
     }
 
-    private boolean upstreamDurationUpdate(Duration delta) {
-
-    }
 
 
 
