@@ -28,6 +28,7 @@ public class Skill {
     private int weight; // Weight used when ordering skills. Example: Basic 1, Intermediate 2; Advanced 3;
     private String description;
     private Duration skillTime;
+    private Duration skillTimeLocal;
     private String displayName;
 
     /**
@@ -52,10 +53,12 @@ public class Skill {
 
         this.parentSkillId = parentSkillId;
 
+
         this.displayName = Objects.requireNonNull(displayName, "displayName cannot be null");
         this.description = description;
 
         this.skillTime = DEFAULT_SKILL_TIME;
+        this.skillTimeLocal = DEFAULT_SKILL_TIME;
 
         this.dateCreated = Instant.now();
         this.weight = 0;
@@ -81,11 +84,13 @@ public class Skill {
             String displayName,
             String description,
             Duration skillTime,
+            Duration skillTimeLocal,
             int weight,
             Instant dateCreated
     ) {
         this.displayName = displayName;
         this.skillTime = skillTime;
+        this.skillTimeLocal = skillTimeLocal;
         this.description = description;
         this.weight = weight;
         this.parentSkillId = parentSkillId;
@@ -123,6 +128,8 @@ public class Skill {
         return skillTime;
     }
 
+    public Duration getSkillTimeLocal() {return skillTimeLocal;}
+
     public Instant getDateCreated() {
         return dateCreated;
     }
@@ -149,12 +156,7 @@ public class Skill {
 
     public void addTime(Duration duration) {
         Objects.requireNonNull(duration, "duration cannot be null");
-        this.skillTime = this.skillTime.plus(duration);
-        Main.SKILL_DATABASE.upsertSkill(
-                skillId, templateId, userId, parentSkillId,
-                weight, skillTime.getSeconds(), displayName, description
-        );
-        upstreamDurationUpdate(duration);
+        this.skillTimeLocal = this.skillTimeLocal.plus(duration);
     }
 
     public boolean setDisplayName(String name) {
@@ -173,10 +175,12 @@ public class Skill {
         return false;
     }
 
+    /**
+     * Recursively recalculate skill durations for each leaf node
+     * @return total skill duration for this node
+     */
     public Duration recalculateSkillDuration() {
-        if (children.isEmpty()) return this.skillTime;
-
-        Duration total = Duration.ZERO;
+        Duration total = this.skillTimeLocal;
         for(Skill skill : children) {
             total = total.plus(skill.recalculateSkillDuration());
         }
@@ -184,24 +188,6 @@ public class Skill {
         return total;
     }
 
-    private boolean upstreamDurationUpdate(Duration delta) {
-        if (this.parentSkillId == null) return false;
-        Skill parent = Main.SKILL_DATABASE.getSkillById(this.parentSkillId);
-        if (parent == null) return false;
 
-        parent.skillTime = parent.skillTime.plus(delta);
-        Main.SKILL_DATABASE.upsertSkill(
-                parent.skillId,
-                parent.templateId,
-                parent.userId,
-                parent.parentSkillId,
-                parent.weight,
-                parent.skillTime.getSeconds(),
-                parent.displayName,
-                parent.description
-        );
-        parent.upstreamDurationUpdate(delta);
-        return true;
-    }
 
 }
