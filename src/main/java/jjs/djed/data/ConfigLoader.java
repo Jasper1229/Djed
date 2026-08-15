@@ -17,8 +17,8 @@ public class ConfigLoader {
 
     public static void loadConfig() {
         Yaml yaml = new Yaml();
-        Path localConfig = Paths.get("config.yml");
-        String targetFile = Files.exists(localConfig) ? "config.yml" : "config.example.yml";
+        Path localConfig = Paths.get("application.yml");
+        String targetFile = Files.exists(localConfig) ? "application.yml" : "application.example.yml";
 
         try (InputStream inputStream = Files.newInputStream(Paths.get(targetFile))) {
             configData = yaml.load(inputStream);

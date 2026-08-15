@@ -41,4 +41,4 @@ build/
 .DS_Store
 
 ### CONFIG ###
-config.yml
+application.yml
