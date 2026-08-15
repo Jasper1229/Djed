@@ -1,9 +1,7 @@
 package jjs.djed.model;
 
-import jjs.djed.Main;
 import jjs.djed.util.Patterns;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,10 +11,10 @@ import java.util.UUID;
 
 public class Skill {
 
-    private static final Duration DEFAULT_SKILL_TIME = Duration.ZERO;
+    private static final int DEFAULT_SKILL_TIME = 0;
 
     private final UUID skillId;
-    private final UUID templateId;
+    //private final UUID templateId;
     private final UUID userId;
     private final Instant dateCreated;
 
@@ -27,28 +25,28 @@ public class Skill {
 
     private int weight; // Weight used when ordering skills. Example: Basic 1, Intermediate 2; Advanced 3;
     private String description;
-    private Duration skillTime;
-    private Duration skillTimeLocal;
+    private long skillTime;
+    private long skillTimeLocal;
     private String displayName;
 
     /**
      * Method used to create a new skill instance. Only use when creating brand new.
      * Use
-     * @param templateId the ID of the skill template
+     * //@param templateId the ID of the skill template
      * @param userId The ID of the user whom the skill belongs to
      * @param parentSkillId the ID of the parent skill (Null if no parent)
      * @param displayName The display name of the skill
      * @param description The description of the skill
      */
     public Skill(
-            UUID templateId,
+            //UUID templateId,
             UUID userId,
             UUID parentSkillId,
             String displayName,
             String description
     ) {
         this.skillId = UUID.randomUUID();
-        this.templateId = Objects.requireNonNull(templateId, "templateId cannot be null");
+        //this.templateId = Objects.requireNonNull(templateId, "templateId cannot be null");
         this.userId = Objects.requireNonNull(userId, "userId cannot be null");
 
         this.parentSkillId = parentSkillId;
@@ -67,7 +65,7 @@ public class Skill {
     /**
      * Constructor to use when loading pre-made skill instance
      * @param skillId  UUID of the skill
-     * @param templateId  UUID of the skill template
+     * //@param templateId  UUID of the skill template
      * @param userId  UUID of the user whom the skill belongs to
      * @param parentSkillId  UUID of the parent skill (Null if there is no parent)
      * @param displayName  Display name of the skill
@@ -78,13 +76,13 @@ public class Skill {
      */
     public Skill(
             UUID skillId,
-            UUID templateId,
+            //UUID templateId,
             UUID userId,
             UUID parentSkillId,
             String displayName,
             String description,
-            Duration skillTime,
-            Duration skillTimeLocal,
+            int skillTime,
+            int skillTimeLocal,
             int weight,
             Instant dateCreated
     ) {
@@ -96,7 +94,7 @@ public class Skill {
         this.parentSkillId = parentSkillId;
         this.dateCreated = dateCreated;
         this.userId = userId;
-        this.templateId = templateId;
+        //this.templateId = templateId;
         this.skillId = skillId;
     }
 
@@ -104,9 +102,9 @@ public class Skill {
         return skillId;
     }
 
-    public UUID getTemplateId() {
-        return templateId;
-    }
+    //public UUID getTemplateId() {
+    //    return templateId;
+    //}
 
     public UUID getUserId() {
         return userId;
@@ -124,11 +122,11 @@ public class Skill {
         return description;
     }
 
-    public Duration getSkillTime() {
+    public long getSkillTime() {
         return skillTime;
     }
 
-    public Duration getSkillTimeLocal() {return skillTimeLocal;}
+    public long getSkillTimeLocal() {return skillTimeLocal;}
 
     public Instant getDateCreated() {
         return dateCreated;
@@ -154,9 +152,8 @@ public class Skill {
     }
 
 
-    public void addTime(Duration duration) {
-        Objects.requireNonNull(duration, "duration cannot be null");
-        this.skillTimeLocal = this.skillTimeLocal.plus(duration);
+    public void addTime(int duration) {
+        this.skillTimeLocal = this.skillTimeLocal + duration;
     }
 
     public boolean setDisplayName(String name) {
@@ -179,15 +176,12 @@ public class Skill {
      * Recursively recalculate skill durations for each leaf node
      * @return total skill duration for this node
      */
-    public Duration recalculateSkillDuration() {
-        Duration total = this.skillTimeLocal;
+    public long recalculateSkillDuration() {
+        long total = this.skillTimeLocal;
         for(Skill skill : children) {
-            total = total.plus(skill.recalculateSkillDuration());
+            total = total + skill.recalculateSkillDuration();
         }
         this.skillTime = total;
         return total;
     }
-
-
-
 }
