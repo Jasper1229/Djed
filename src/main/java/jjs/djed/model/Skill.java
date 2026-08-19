@@ -2,7 +2,7 @@ package jjs.djed.model;
 
 import jjs.djed.util.Patterns;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,14 +16,13 @@ public class Skill {
     private final UUID skillId;
     //private final UUID templateId;
     private final UUID userId;
-    private final Instant dateCreated;
-
-    private final Set<Skill> children = new HashSet<>();
+    private final UUID rootId;
+    private final OffsetDateTime dateCreated;
 
     private UUID parentSkillId;
 
 
-    private int weight; // Weight used when ordering skills. Example: Basic 1, Intermediate 2; Advanced 3;
+    private short weight; // Weight used when ordering skills. Example: Basic 1, Intermediate 2; Advanced 3;
     private String description;
     private long skillTime;
     private long skillTimeLocal;
@@ -41,11 +40,14 @@ public class Skill {
     public Skill(
             //UUID templateId,
             UUID userId,
+            UUID skillId,
             UUID parentSkillId,
+            UUID rootId,
             String displayName,
             String description
     ) {
-        this.skillId = UUID.randomUUID();
+        this.rootId = rootId;
+        this.skillId = skillId;
         //this.templateId = Objects.requireNonNull(templateId, "templateId cannot be null");
         this.userId = Objects.requireNonNull(userId, "userId cannot be null");
 
@@ -58,7 +60,7 @@ public class Skill {
         this.skillTime = DEFAULT_SKILL_TIME;
         this.skillTimeLocal = DEFAULT_SKILL_TIME;
 
-        this.dateCreated = Instant.now();
+        this.dateCreated = OffsetDateTime.now();
         this.weight = 0;
     }
 
@@ -75,17 +77,19 @@ public class Skill {
      * @param dateCreated Date created
      */
     public Skill(
+            UUID userId,
             UUID skillId,
             //UUID templateId,
-            UUID userId,
             UUID parentSkillId,
+            UUID rootId,
             String displayName,
             String description,
-            int skillTime,
-            int skillTimeLocal,
-            int weight,
-            Instant dateCreated
+            long skillTime,
+            long skillTimeLocal,
+            short weight,
+            OffsetDateTime dateCreated
     ) {
+        this.rootId = rootId;
         this.displayName = displayName;
         this.skillTime = skillTime;
         this.skillTimeLocal = skillTimeLocal;
@@ -128,7 +132,7 @@ public class Skill {
 
     public long getSkillTimeLocal() {return skillTimeLocal;}
 
-    public Instant getDateCreated() {
+    public OffsetDateTime getDateCreated() {
         return dateCreated;
     }
 
@@ -137,23 +141,16 @@ public class Skill {
         this.parentSkillId = parentSkillId;
     }
 
-    public int getWeight() {
+    public short getWeight() {
         return weight;
     }
 
-    public Set<Skill> getChildren() {
-        return children;
-    }
-
-    public void addChild(Skill child) {
-        Objects.requireNonNull(child, "child cannot be null");
-        child.parentSkillId = this.skillId;
-        this.children.add(child);
-    }
-
-
     public void addTime(int duration) {
         this.skillTimeLocal = this.skillTimeLocal + duration;
+    }
+
+    public void setWeight(short weight) {
+        this.weight = weight;
     }
 
     public boolean setDisplayName(String name) {
@@ -172,16 +169,7 @@ public class Skill {
         return false;
     }
 
-    /**
-     * Recursively recalculate skill durations for each leaf node
-     * @return total skill duration for this node
-     */
-    public long recalculateSkillDuration() {
-        long total = this.skillTimeLocal;
-        for(Skill skill : children) {
-            total = total + skill.recalculateSkillDuration();
-        }
-        this.skillTime = total;
-        return total;
+    public UUID getRootId() {
+        return rootId;
     }
 }
