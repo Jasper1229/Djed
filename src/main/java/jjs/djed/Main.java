@@ -1,22 +1,11 @@
 package jjs.djed;
 
-import com.zaxxer.hikari.HikariDataSource;
-import jjs.djed.data.ConfigLoader;
-import jjs.djed.data.Database;
-import jjs.djed.data.SkillDatabase;
-import jjs.djed.model.Skill;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.time.Duration;
-import java.util.UUID;
-
+@SpringBootApplication
 public class Main {
-    public static HikariDataSource DATASOURCE;
-    public static SkillDatabase SKILL_DATABASE;
-
-    static void main() {
-        ConfigLoader.loadConfig();
-
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
     }
 }
