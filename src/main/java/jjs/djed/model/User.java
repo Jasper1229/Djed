@@ -1,12 +1,13 @@
 package jjs.djed.model;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 public class User {
     private final UUID userId;
     private String username;
-    private final Instant dateCreated;
+    private final OffsetDateTime dateCreated;
+    private final long displayId;
 
     /**
      * Create a user from already known parameters. Only use when loading from database
@@ -14,10 +15,11 @@ public class User {
      * @param username the username of the user
      * @param dateCreated the date the user was created
      */
-    public User(UUID userId, String username, Instant dateCreated) {
+    public User(UUID userId, String username, OffsetDateTime dateCreated, long displayId) {
         this.userId = userId;
         this.username = username;
         this.dateCreated = dateCreated;
+        this.displayId = displayId;
     }
 
     /**
@@ -26,14 +28,14 @@ public class User {
      */
     public User(String username) {
         this.username = username;
-        this.dateCreated = Instant.now();
+        this.displayId = -1;
+        // Users created with this constructor should not be cached. Only cache users after
+        // they have been loaded from the database with their display id generated
+        this.dateCreated = OffsetDateTime.now();
         this.userId = UUID.randomUUID();
-        saveToDatabase(this);
-    }
-
-    private void saveToDatabase(User user) {
 
     }
+
 
     public UUID getUserId() {
         return userId;
@@ -41,7 +43,7 @@ public class User {
     public String getUsername() {
         return username;
     }
-    public Instant getDateCreated() {
+    public OffsetDateTime getDateCreated() {
         return dateCreated;
     }
 
