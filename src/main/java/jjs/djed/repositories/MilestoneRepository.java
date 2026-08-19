@@ -2,7 +2,6 @@ package jjs.djed.repositories;
 
 
 import jjs.djed.model.Milestone;
-import jjs.djed.model.Skill;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 

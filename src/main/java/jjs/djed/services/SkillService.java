@@ -2,7 +2,6 @@ package jjs.djed.services;
 
 
 import jjs.djed.model.Skill;
-import jjs.djed.model.User;
 import jjs.djed.repositories.SkillRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,7 @@ import java.util.UUID;
 
 @Service
 public class SkillService {
-    private SkillRepository skillRepository;
+    private final SkillRepository skillRepository;
     public SkillService(SkillRepository skillRepository) {
         this.skillRepository = skillRepository;
     }
