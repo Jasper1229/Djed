@@ -1,12 +1,15 @@
 package jjs.djed.repositories;
 
+import jjs.djed.model.Skill;
 import jjs.djed.model.User;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static jjs.djed.jooq.Tables.SKILLS;
 import static jjs.djed.jooq.Tables.USERS;
 
 @Repository
@@ -50,6 +53,16 @@ public class UserRepository {
                 .where(USERS.USER_ID.eq(id))
                 .fetchOptional()
                 .map(record -> new User(
+                        record.getUserId(),
+                        record.getName(),
+                        record.getDateCreated(),
+                        record.getDisplayId()
+                ));
+    }
+    public List<User> findAll() {
+        return dsl.selectFrom(USERS)
+                .orderBy(USERS.DISPLAY_ID)
+                .fetch(record -> new User(
                         record.getUserId(),
                         record.getName(),
                         record.getDateCreated(),

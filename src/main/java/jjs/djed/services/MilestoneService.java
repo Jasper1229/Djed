@@ -4,6 +4,7 @@ import jjs.djed.model.Milestone;
 import jjs.djed.repositories.MilestoneRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -13,8 +14,8 @@ public class MilestoneService {
         this.milestoneRepository = milestoneRepository;
     }
 
-    public Milestone createMilestone(String description, String name, long requiredSeconds) {
-        Milestone milestone = new Milestone(description, name, requiredSeconds);
+    public Milestone createMilestone(UUID skillId, String description, String name, long requiredSeconds) {
+        Milestone milestone = new Milestone(skillId, description, name, requiredSeconds);
         return milestoneRepository.insert(milestone);
     }
 
@@ -24,5 +25,9 @@ public class MilestoneService {
 
     public Milestone getMilestone(UUID id) {
         return milestoneRepository.getById(id).orElse(null);
+    }
+
+    public List<Milestone> getSkillMilestones(UUID skillId) {
+        return milestoneRepository.getSkillMilestones(skillId);
     }
 }

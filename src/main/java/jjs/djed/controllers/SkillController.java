@@ -2,11 +2,13 @@ package jjs.djed.controllers;
 
 import jjs.djed.model.Skill;
 import jjs.djed.services.SkillService;
+import jjs.djed.web.patch.UpdateSkillParentRequest;
 import jjs.djed.web.patch.UpdateSkillRequest;
 import jjs.djed.web.post.CreateSkillRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,9 +40,6 @@ public class SkillController {
         if(skill == null) {
             return ResponseEntity.notFound().build();
         }
-        if(request.parentId() != null) {
-            skill.setParentSkillId(request.parentId());
-        }
         if(request.name() != null) {
             skill.setDisplayName(request.name());
         }
@@ -54,5 +53,31 @@ public class SkillController {
         return ResponseEntity.ok(skill);
     }
 
-    
+    @GetMapping("/users/{id}/skilltrees")
+    public ResponseEntity<List<Skill>> getUserSkillTrees(@PathVariable UUID id) {
+        return ResponseEntity.ok(skillService.getRootsByUserId(id));
+    }
+
+    @PatchMapping("/skills/{id}/parent")
+    public ResponseEntity<Skill> updateSkillParent(@PathVariable UUID id, @RequestBody UpdateSkillParentRequest request) {
+        Skill skill = skillService.updateParentSkill(id, request.newParentId());
+
+        if(skill == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(skill);
+
+    }
+
+    @GetMapping("/skills/{id}/children")
+    public ResponseEntity<List<Skill>> getChildren(@PathVariable UUID id) {
+        List<Skill> skills = skillService.getChildren(id);
+        if (skills.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(skills);
+    }
+
+
 }

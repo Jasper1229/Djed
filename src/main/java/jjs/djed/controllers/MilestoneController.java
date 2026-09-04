@@ -5,12 +5,12 @@ import jjs.djed.services.MilestoneService;
 import jjs.djed.web.post.CreateMilestoneRequest;
 import jjs.djed.web.patch.UpdateMilestoneRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 public class MilestoneController {
     private final MilestoneService milestoneService;
     public MilestoneController(MilestoneService milestoneService) {
@@ -28,7 +28,7 @@ public class MilestoneController {
 
     @PostMapping("/milestones")
     public ResponseEntity<Milestone> createMilestone(@RequestBody CreateMilestoneRequest request) {
-        Milestone milestone = milestoneService.createMilestone(request.description(), request.name(), request.requiredSeconds());
+        Milestone milestone = milestoneService.createMilestone(request.skillId(), request.name(), request.description(), request.requiredSeconds());
         return ResponseEntity.ok(milestone);
     }
 
@@ -51,5 +51,9 @@ public class MilestoneController {
 
         milestoneService.updateMilestone(milestone);
         return ResponseEntity.ok(milestone);
+    }
+    @GetMapping("/skills/{id}/milestones")
+    public ResponseEntity<List<Milestone>> getSkillMilestones(@PathVariable UUID id) {
+        return ResponseEntity.ok(milestoneService.getSkillMilestones(id));
     }
 }

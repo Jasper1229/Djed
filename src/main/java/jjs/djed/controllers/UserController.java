@@ -7,6 +7,7 @@ import jjs.djed.web.post.CreateUserRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -30,5 +31,14 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody CreateUserRequest request) {
         User user = userService.createUser(request.username());
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getUsers();
+        if(users.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
     }
 }

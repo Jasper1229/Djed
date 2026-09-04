@@ -7,22 +7,26 @@ public class Milestone {
     private String name;
     private String description;
     private long requiredSeconds;
+    private final UUID skillId;
 
     /**
      * Method used when creating a milestone object from database
+     * @param skillUuid
      * @param milestoneUuid
      * @param name
      * @param description
      * @param requiredSeconds
      */
-    public Milestone(UUID milestoneUuid, String description, String name, long requiredSeconds) {
+    public Milestone(UUID skillUuid, UUID milestoneUuid, String description, String name, long requiredSeconds) {
+        this.skillId = skillUuid;
         this.milestoneUuid = milestoneUuid;
         this.description = description;
         this.name = name;
         this.requiredSeconds = requiredSeconds;
     }
 
-    public Milestone(String description, String name, long requiredSeconds) {
+    public Milestone(UUID skillId, String name, String description, long requiredSeconds) {
+        this.skillId = skillId;
         this.milestoneUuid = UUID.randomUUID();
         this.description = description;
         this.name = name;
@@ -31,6 +35,10 @@ public class Milestone {
 
     public UUID getMilestoneUuid() {
         return milestoneUuid;
+    }
+
+    public UUID getSkillId() {
+        return skillId;
     }
 
     public String getName() {

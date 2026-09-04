@@ -4,7 +4,9 @@ package jjs.djed.services;
 import jjs.djed.model.Skill;
 import jjs.djed.repositories.SkillRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,5 +51,48 @@ public class SkillService {
 
     public int addDeltaTime(UUID skillId, long delta) {
         return skillRepository.propagate(skillId, delta);
+    }
+
+    public boolean doesSkillExist(UUID skillId) {
+        return skillRepository.findById(skillId).isPresent();
+    }
+
+    public List<Skill> getRootsByUserId(UUID userId) {
+        return skillRepository.findRootsByUserId(userId);
+    }
+
+    @Transactional
+    public Skill updateParentSkill(UUID skillId, UUID newParentSkillId) {
+        Skill skill = skillRepository.findById(skillId).orElse(null);
+        Skill newParent = skillRepository.findById(newParentSkillId).orElse(null);
+        if (newParent == null) {
+            return null;
+        }
+        if (
+                skill == null ||
+                        newParentSkillId.equals(skill.getParentSkillId()) ||
+                        !(newParent.getRootId().equals(skill.getRootId())) ||
+                        newParentSkillId.equals(skillId)
+        ) {
+            return null;
+        }
+        UUID cursor = newParent.getParentSkillId();
+        while (cursor != null) {
+            if (cursor.equals(skillId)) {
+                return null;
+            }
+            Skill current = skillRepository.findById(cursor).orElse(null);
+            cursor = (current == null) ? null : current.getParentSkillId();
+        }
+
+        long subtreeTime = skill.getSkillTime();   // ← NEW: read once
+
+        skillRepository.propagateFromParent(skill.getParentSkillId(), -subtreeTime);   // ← changed
+        skillRepository.propagateFromParent(newParentSkillId, subtreeTime);            // ← changed
+        return skillRepository.updateParent(skillId, newParentSkillId);
+    }
+
+    public List<Skill> getChildren(UUID skillId) {
+        return skillRepository.findChildren(skillId);
     }
 }

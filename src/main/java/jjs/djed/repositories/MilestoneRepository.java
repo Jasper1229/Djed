@@ -5,6 +5,7 @@ import jjs.djed.model.Milestone;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,15 +20,17 @@ public class MilestoneRepository {
 
     public Milestone insert(Milestone milestone) {
         return dsl.insertInto(MILESTONES)
+                .set(MILESTONES.SKILL_ID, milestone.getSkillId())
                 .set(MILESTONES.MILESTONE_ID, milestone.getMilestoneUuid())
                 .set(MILESTONES.DESCRIPTION, milestone.getName())
                 .set(MILESTONES.NAME, milestone.getName())
                 .set(MILESTONES.TIME_SECONDS, milestone.getRequiredSeconds())
                 .returning()
                 .fetchOne(record -> new Milestone(
+                        record.getSkillId(),
                         record.getMilestoneId(),
-                        record.getDescription(),
                         record.getName(),
+                        record.getDescription(),
                         record.getTimeSeconds()
                 ));
     }
@@ -41,9 +44,10 @@ public class MilestoneRepository {
                 .where(MILESTONES.MILESTONE_ID.eq(milestone.getMilestoneUuid()))
                 .returning()
                 .fetchOne(record -> new Milestone(
+                        record.getSkillId(),
                         record.getMilestoneId(),
-                        record.getDescription(),
                         record.getName(),
+                        record.getDescription(),
                         record.getTimeSeconds()
                 ));
     }
@@ -53,9 +57,23 @@ public class MilestoneRepository {
                 .where(MILESTONES.MILESTONE_ID.eq(id))
                 .fetchOptional()
                 .map(record -> new Milestone(
+                        record.getSkillId(),
                         record.getMilestoneId(),
-                        record.getDescription(),
                         record.getName(),
+                        record.getDescription(),
+                        record.getTimeSeconds()
+                ));
+    }
+
+    public List<Milestone> getSkillMilestones(UUID skillId) {
+        return dsl.selectFrom(MILESTONES)
+                .where(MILESTONES.SKILL_ID.eq(skillId))
+                .orderBy(MILESTONES.TIME_SECONDS.asc())
+                .fetch(record -> new Milestone(
+                        record.getSkillId(),
+                        record.getMilestoneId(),
+                        record.getName(),
+                        record.getDescription(),
                         record.getTimeSeconds()
                 ));
     }

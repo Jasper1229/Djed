@@ -5,6 +5,7 @@ import jjs.djed.model.User;
 import jjs.djed.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,5 +31,8 @@ public class UserService {
         return userRepository.update(user);
     }
 
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
 
 }
