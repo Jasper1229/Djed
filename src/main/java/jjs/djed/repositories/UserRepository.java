@@ -31,7 +31,7 @@ public class UserRepository {
                         record.getUserId(),
                         record.getName(),
                         record.getDateCreated(),
-                        record.getDisplayId()
+                        record.getDisplayName()
                 ));
     }
 
@@ -44,7 +44,7 @@ public class UserRepository {
                         record.getUserId(),
                         record.getName(),
                         record.getDateCreated(),
-                        record.getDisplayId()
+                        record.getDisplayName()
                 ));
     }
 
@@ -56,17 +56,17 @@ public class UserRepository {
                         record.getUserId(),
                         record.getName(),
                         record.getDateCreated(),
-                        record.getDisplayId()
+                        record.getDisplayName()
                 ));
     }
     public List<User> findAll() {
         return dsl.selectFrom(USERS)
-                .orderBy(USERS.DISPLAY_ID)
+                .orderBy(USERS.DISPLAY_NAME.asc())
                 .fetch(record -> new User(
                         record.getUserId(),
                         record.getName(),
                         record.getDateCreated(),
-                        record.getDisplayId()
+                        record.getDisplayName()
                 ));
     }
 }

@@ -5,9 +5,9 @@ import java.util.UUID;
 
 public class User {
     private final UUID userId;
-    private String username;
+    private final String username;
     private final OffsetDateTime dateCreated;
-    private final long displayId;
+    private String displayName;
 
     /**
      * Create a user from already known parameters. Only use when loading from database
@@ -15,11 +15,11 @@ public class User {
      * @param username the username of the user
      * @param dateCreated the date the user was created
      */
-    public User(UUID userId, String username, OffsetDateTime dateCreated, long displayId) {
+    public User(UUID userId, String username, OffsetDateTime dateCreated, String displayName) {
         this.userId = userId;
         this.username = username;
         this.dateCreated = dateCreated;
-        this.displayId = displayId;
+        this.displayName = displayName;
     }
 
     /**
@@ -28,11 +28,11 @@ public class User {
      */
     public User(String username) {
         this.username = username;
-        this.displayId = -1;
         // Users created with this constructor should not be cached. Only cache users after
         // they have been loaded from the database with their display id generated
         this.dateCreated = OffsetDateTime.now();
         this.userId = UUID.randomUUID();
+        this.displayName = username;
 
     }
 
@@ -47,7 +47,7 @@ public class User {
         return dateCreated;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }
