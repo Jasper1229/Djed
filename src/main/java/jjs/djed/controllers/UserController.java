@@ -4,6 +4,7 @@ package jjs.djed.controllers;
 import jjs.djed.model.User;
 import jjs.djed.services.UserService;
 import jjs.djed.web.post.CreateUserRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,10 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<Object> createUser(@RequestBody CreateUserRequest request) {
+        if(userService.usernameExists(request.username())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
+        }
         User user = userService.createUser(request.username());
         return ResponseEntity.ok(user);
     }

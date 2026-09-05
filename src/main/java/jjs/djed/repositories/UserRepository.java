@@ -69,4 +69,10 @@ public class UserRepository {
                         record.getDisplayName()
                 ));
     }
+    public boolean usernameExists(String username) {
+        return dsl.fetchExists(
+                dsl.selectFrom(USERS)
+                        .where(USERS.NAME.equalIgnoreCase(username))
+        );
+    }
 }
