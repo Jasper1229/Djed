@@ -1,3 +1,3 @@
 package jjs.djed.web.post;
 
-public record CreateUserRequest(String username, String password) {}
+public record CreateUserRequest(String username, char[] password) {}
