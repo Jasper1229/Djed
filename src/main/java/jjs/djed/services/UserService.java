@@ -3,8 +3,10 @@ package jjs.djed.services;
 
 import jjs.djed.model.User;
 import jjs.djed.repositories.UserRepository;
+import jjs.djed.util.PasswordUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,12 +19,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(String username, String password) {
+    public User createUser(String username, char[] password) {
+        try {
+            String hashed = PasswordUtil.hash(password);
+            User user = new User(username);
 
-
-        User user = new User(username);
-
-        return userRepository.insert(user);
+            return userRepository.insert(user);
+        } finally {
+            Arrays.fill(password, '\0');
+        }
     }
 
     public User getUser(UUID id) {
