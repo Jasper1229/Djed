@@ -24,7 +24,7 @@ public class UserService {
             String hashed = PasswordUtil.hash(password);
             User user = new User(username);
 
-            return userRepository.insert(user);
+            return userRepository.insert(user, hashed);
         } finally {
             Arrays.fill(password, '\0');
         }

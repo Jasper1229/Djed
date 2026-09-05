@@ -21,11 +21,12 @@ public class UserRepository {
         this.dsl = dsl;
     }
 
-    public User insert(User user) {
+    public User insert(User user, String hashed) {
         return dsl.insertInto(USERS)
                 .set(USERS.USER_ID, user.getUserId())
                 .set(USERS.DATE_CREATED, user.getDateCreated())
                 .set(USERS.NAME, user.getUsername())
+                .set(USERS.PASSWORD_HASH, hashed)
                 .returning()
                 .fetchOne(record -> new User(
                         record.getUserId(),
