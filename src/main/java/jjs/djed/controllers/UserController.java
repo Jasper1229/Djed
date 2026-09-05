@@ -33,7 +33,7 @@ public class UserController {
         if(userService.usernameExists(request.username())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
         }
-        User user = userService.createUser(request.username());
+        User user = userService.createUser(request.username(), request.password());
         return ResponseEntity.ok(user);
     }
 
