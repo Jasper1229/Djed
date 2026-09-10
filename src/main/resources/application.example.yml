@@ -2,10 +2,13 @@ server:
   port: 8080
 
 spring:
+  session:
+    jdbc:
+      initialize-schema: always
   jackson:
     property-naming-strategy: SNAKE_CASE
   datasource:
-    url: "jdbc:postgresql://localhost:5432/db"
+    url: "jdbc:postgresql://localhost:5432/db?currentSchema=schema"
     username: "username"
     password: "password"
     driver-class-name: org.postgresql.Driver
