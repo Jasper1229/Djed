@@ -76,4 +76,21 @@ public class UserRepository {
                         .where(USERS.NAME.equalIgnoreCase(username))
         );
     }
+    public Optional<UserWithHash> findByUsernameWithHash(String username) {
+        return dsl.selectFrom(USERS)
+                .where(USERS.NAME.equalIgnoreCase(username))
+                .fetchOptional(record -> new UserWithHash(
+                        new User(
+                                record.getUserId(),
+                                record.getName(),
+                                record.getDateCreated(),
+                                record.getDisplayName()
+                        ),
+                        record.getPasswordHash()
+                ));
+
+    }
+
+    public record UserWithHash(User user, String hash) {}
+
 }
