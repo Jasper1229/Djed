@@ -1,7 +1,7 @@
 package jjs.djed.services;
 
 import jjs.djed.model.Session;
-import jjs.djed.repositories.SessionRepository;
+import jjs.djed.repositories.SkillSessionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class SessionService {
-    private final SessionRepository sessionRepository;
+public class SkillSessionService {
+    private final SkillSessionRepository skillSessionRepository;
     private final SkillService skillService;
-    public SessionService(SessionRepository sessionRepository, SkillService skillService) {
-        this.sessionRepository = sessionRepository;
+    public SkillSessionService(SkillSessionRepository skillSessionRepository, SkillService skillService) {
+        this.skillSessionRepository = skillSessionRepository;
         this.skillService = skillService;
     }
 
@@ -30,12 +30,12 @@ public class SessionService {
 
             skillService.addDeltaTime(skillId, session.getDuration());
 
-            return sessionRepository.insert(session);
+            return skillSessionRepository.insert(session);
     }
 
     @Transactional
     public void delete(UUID sessionId) {
-        Session session = sessionRepository.delete(sessionId).orElse(null);
+        Session session = skillSessionRepository.delete(sessionId).orElse(null);
         if(session == null) {
             throw new RuntimeException("Session not found");
         }
@@ -52,7 +52,7 @@ public class SessionService {
         long newDuration = session.getDuration();
 
         long delta = newDuration - originalDuration;
-        Session updated = sessionRepository.update(session);
+        Session updated = skillSessionRepository.update(session);
 
         if (delta != 0) {
             skillService.addDeltaTime(session.getSkillId(), delta);
@@ -76,7 +76,7 @@ public class SessionService {
                 session.getEndTime()
         );
 
-        Session result = sessionRepository.update(updated);
+        Session result = skillSessionRepository.update(updated);
 
         skillService.addDeltaTime(session.getSkillId(), -duration);
         skillService.addDeltaTime(newSkillId, duration);
@@ -85,10 +85,10 @@ public class SessionService {
     }
 
     public Session getSession(UUID sessionId) {
-        return sessionRepository.getById(sessionId).orElse(null);
+        return skillSessionRepository.getById(sessionId).orElse(null);
     }
     public List<Session> getSessionsBySkillId(UUID skillId) {
-        return sessionRepository.getSessionsBySkillId(skillId);
+        return skillSessionRepository.getSessionsBySkillId(skillId);
     }
 
 

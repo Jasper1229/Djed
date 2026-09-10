@@ -13,10 +13,10 @@ import static jjs.djed.jooq.Tables.SESSIONS;
 
 
 @Repository
-public class SessionRepository {
+public class SkillSessionRepository {
     private final DSLContext dsl;
 
-    public SessionRepository(DSLContext dsl) {
+    public SkillSessionRepository(DSLContext dsl) {
         this.dsl = dsl;
     }
 
